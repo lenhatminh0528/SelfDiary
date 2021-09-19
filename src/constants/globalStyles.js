@@ -1,9 +1,9 @@
 import {styleSheetFactory} from './themes';
 
-const globalStyles = styleSheetFactory(theme => ({
+const globalStyle = styleSheetFactory(theme => ({
   flex1: {
     flex: 1,
   },
 }));
 
-export default globalStyles;
+export default globalStyle;

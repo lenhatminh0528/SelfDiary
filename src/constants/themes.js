@@ -9,6 +9,7 @@ const dark = DARK_THEME;
 
 export const styleSheetFactory = registerThemes({light, dark}, () => {
   const [colorScheme, setColorScheme] = useState(initTheme.mode);
+
   useEffect(() => {
     const listener = emitter.addListener('ChangeAppTheme', theme => {
       setColorScheme(theme);

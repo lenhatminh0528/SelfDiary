@@ -1,7 +1,7 @@
-import icLock from './ic_lock.svg';
+import ic_lock from './ic_lock.svg';
 
 const Svgs = {
-  icLock,
+  ic_lock,
 };
 
 export default Svgs;

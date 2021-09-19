@@ -4,35 +4,27 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import InitView from '../pages/initView';
 import SettingView from '../pages/setting';
+import DashBoard from '../pages/dashBoard';
 import {EnumRouteName} from '../../constants/routeName';
 const AuthStack = createStackNavigator();
-
-// const firstScreen = () => {
-//   return (
-//     <View>
-//       <Text>screen 1</Text>
-//     </View>
-//   );
-// };
-
-// const secondScreen = () => {
-//   return (
-//     <View>
-//       <Text>screen 2</Text>
-//     </View>
-//   );
-// };
 
 const Navigation = () => {
   return (
     <NavigationContainer>
       <AuthStack.Navigator
-        headerMode="none"
+        screenOptions={({route, navigation}) => ({
+          headerShown: false,
+          gestureEnabled: true,
+        })}
         initialRouteName={EnumRouteName.initView}>
         <AuthStack.Screen name={EnumRouteName.initView} component={InitView} />
         <AuthStack.Screen
           name={EnumRouteName.settingView}
           component={SettingView}
+        />
+        <AuthStack.Screen
+          name={EnumRouteName.dashBoard}
+          component={DashBoard}
         />
       </AuthStack.Navigator>
     </NavigationContainer>
