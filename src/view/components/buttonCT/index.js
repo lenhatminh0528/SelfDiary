@@ -1,11 +1,24 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
+import Svgs from '../../../assets/images/svg';
+import {SvgXml} from 'react-native-svg';
 
-const ButtonCT = () => {
+const ButtonCT = props => {
+  const {containerStyle, title, icon, onPress} = props;
   return (
-    <View>
-      <Text>cc</Text>
-    </View>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        {
+          backgroundColor: 'brown',
+          alignItems: 'center',
+          justifyContent: 'center',
+        },
+        containerStyle,
+      ]}>
+      {icon && <SvgXml xml={icon} width={30} height={30} fill={'black'} />}
+      {title && <Text>{title}</Text>}
+    </TouchableOpacity>
   );
 };
 

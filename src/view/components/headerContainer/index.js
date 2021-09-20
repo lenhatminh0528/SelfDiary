@@ -7,7 +7,7 @@ import Svgs from '../../../assets/images/svg';
 import {SvgXml} from 'react-native-svg';
 
 const HeaderContainer = props => {
-  const {title, iconLeft, onPressIconLeft} = props;
+  const {title, iconLeft, onPressIconLeft, iconRightContent} = props;
   const [styles, theme] = useTheme(themedStyles);
   const [glbStyle] = useTheme(globalStyle);
   return (
@@ -39,14 +39,21 @@ const HeaderContainer = props => {
             alignItems: 'center',
           },
           !iconLeft && {marginLeft: 20},
-          iconLeft && {paddingLeft: 20},  //paddingLeft de tang vung press - hit slop
+          iconLeft && {paddingLeft: 20}, //paddingLeft de tang vung press - hit slop
           ,
         ]}>
         {iconLeft && (
           <SvgXml fill={theme.black} width={20} height={20} xml={iconLeft} />
         )}
       </TouchableOpacity>
-      <Text style={{fontSize: 24, fontWeight: 'bold'}}>{title}</Text>
+      <View
+        style={[
+          {flex: 1, backgroundColor: 'red'},
+          iconLeft && {paddingStart: 10},
+        ]}>
+        <Text style={{fontSize: 24, fontWeight: 'bold'}}>{title}</Text>
+      </View>
+      {iconRightContent && iconRightContent}
     </View>
   );
 };
