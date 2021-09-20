@@ -3,7 +3,7 @@ import {View, Text, Keyboard} from 'react-native';
 import {EnumRouteName} from '../../../constants/routeName';
 import InputCodeCT from '../../components/inputCodeCT';
 import {SvgXml} from 'react-native-svg';
-import Svgs from '../../../assets/svg';
+import Svgs from '../../../assets/images/svg';
 import loadingModal from '../../components/loadingModal';
 import useMergeState from '../../../utils/useMergeState';
 import LoadingModal from '../../components/loadingModal';

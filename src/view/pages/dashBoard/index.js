@@ -1,10 +1,19 @@
 import React from 'react';
 import {View, Text} from 'react-native';
+import HeaderContainer from '../../components/headerContainer';
+import Svgs from '../../../assets/images/svg';
 
 const DashBoard = () => {
+  const pressLeft = () => {
+    console.log('press left');
+  };
   return (
     <View>
-      <Text>dash board</Text>
+      <HeaderContainer
+        onPressIconLeft={pressLeft}
+        iconLeft={Svgs.back}
+        title={'dash board'}
+      />
     </View>
   );
 };
