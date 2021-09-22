@@ -1,11 +1,15 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
+import {View, TouchableOpacity, FlatList} from 'react-native';
 import HeaderContainer from '../../components/headerContainer';
 import Svgs from '../../../assets/images/svg';
 import {SvgXml} from 'react-native-svg';
 import ButtonCT from '../../components/buttonCT';
-import DashBoardCell from '../dashBoard/dashBoardCell';
-
+import NoteCell from './noteCell';
+import themedStyles from './styles';
+import globalStyle from '../../../constants/globalStyles';
+import {useTheme} from 'react-native-themed-styles';
+import {EnumRouteName} from '../../../constants/routeName';
+import {useNavigation} from '@react-navigation/native';
 const DATA = [
   {
     id: 1,
@@ -63,56 +67,59 @@ const DATA = [
     context: 'content of title 3',
   },
 ];
-const DashBoard = () => {
+
+const NoteScreen = props => {
+  const {navigation} = props;
+  const [styles, theme] = useTheme(themedStyles);
+  const [glbStyles] = useTheme(globalStyle);
+  // const navigation = useNavigation();
+
   const pressLeft = () => {
     console.log('press left');
   };
-  const renderItem = ({item}) => <DashBoardCell item={item} />;
+
+  const onPressItem = item => {
+    console.log('press', item);
+    console.log('press', navigation);
+    navigation.natvigate(EnumRouteName.EditDetail, {item});
+  };
+
+  const renderItem = ({item}) => (
+    <NoteCell onPressCell={() => onPressItem(item)} item={item} />
+  );
+
   const onPressAddNew = () => {
     console.log('add new: ');
   };
+
   return (
-    <View style={{flex: 1}}>
+    <View style={glbStyles.flex1}>
       <HeaderContainer
         onPressIconLeft={pressLeft}
         iconLeft={Svgs.back}
         title={'dash board'}
         iconRightContent={
-          <TouchableOpacity
-            style={{
-              paddingRight: 20,
-              marginLeft: 10,
-            }}>
-            <SvgXml fill={'black'} width={20} height={20} xml={Svgs.ic_trash} />
+          <TouchableOpacity style={styles.iconRight}>
+            <SvgXml fill={'white'} width={20} height={20} xml={Svgs.ic_trash} />
           </TouchableOpacity>
         }
       />
       <FlatList
         data={DATA}
         keyExtractor={item => item?.id}
-        contentContainerStyle={{marginHorizontal: 10}}
+        contentContainerStyle={styles.padding10}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
       />
       <ButtonCT
-        containerStyle={{
-          width: 60,
-          height: 60,
-          borderRadius: 28,
-          position: 'absolute',
-          right: 20,
-          bottom: 20,
-          shadowColor: 'red',
-          shadowOpacity: 1,
-          shadowRadius: 3,
-          elevation: 6,
-        }}
+        containerStyle={styles.button}
+        type="ICON"
+        iconColor={theme.white}
         onPress={onPressAddNew}
         icon={Svgs.ic_add}
-        // title={'Minh dep trai'}
       />
     </View>
   );
 };
 
-export default DashBoard;
+export default NoteScreen;

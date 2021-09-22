@@ -9,7 +9,7 @@ export const storeData = async (value, KEY) => {
   }
 };
 
-export const getData = async (value, KEY) => {
+export const getData = async KEY => {
   try {
     const jsonValue = await AsyncStorage.getItem(KEY);
     return jsonValue != null ? JSON.parse(jsonValue) : null;

@@ -16,7 +16,7 @@ const HeaderContainer = props => {
         flexDirection: 'row',
         height: 56,
         width: '100%',
-        backgroundColor: 'pink',
+        backgroundColor: '#1565c0',
         alignItems: 'center',
         shadowColor: theme.shadow,
         shadowOffset: {
@@ -33,7 +33,6 @@ const HeaderContainer = props => {
         disabled={!iconLeft}
         style={[
           {
-            backgroundColor: 'yellow',
             aspectRatio: 1,
             justifyContent: 'center',
             alignItems: 'center',
@@ -43,15 +42,13 @@ const HeaderContainer = props => {
           ,
         ]}>
         {iconLeft && (
-          <SvgXml fill={theme.black} width={20} height={20} xml={iconLeft} />
+          <SvgXml fill={theme.white} width={20} height={20} xml={iconLeft} />
         )}
       </TouchableOpacity>
-      <View
-        style={[
-          {flex: 1, backgroundColor: 'red'},
-          iconLeft && {paddingStart: 10},
-        ]}>
-        <Text style={{fontSize: 24, fontWeight: 'bold'}}>{title}</Text>
+      <View style={[{flex: 1}, iconLeft && {paddingStart: 10}]}>
+        <Text style={{fontSize: 24, fontWeight: 'bold', color: 'white'}}>
+          {title}
+        </Text>
       </View>
       {iconRightContent && iconRightContent}
     </View>

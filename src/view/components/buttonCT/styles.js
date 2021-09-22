@@ -2,7 +2,11 @@ import {styleSheetFactory} from '../../../constants/themes';
 
 const themedStyles = styleSheetFactory(theme => ({
   container: {
-    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 60,
+    height: 60,
+    borderRadius: 28,
   },
 }));
 export default themedStyles;

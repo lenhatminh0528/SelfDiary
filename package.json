@@ -27,12 +27,15 @@
     "react-native-pager-view": "^5.4.1",
     "react-native-popup-menu": "^0.15.11",
     "react-native-push-notification": "^8.1.0",
+    "react-native-reanimated": "^2.2.2",
     "react-native-safe-area-context": "^3.3.2",
+    "react-native-screens": "^3.7.2",
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.1",
     "react-native-svg-transformer": "^0.14.3",
     "react-native-tab-view": "^3.1.1",
-    "react-native-themed-styles": "0.0.4"
+    "react-native-themed-styles": "0.0.4",
+    "react-navigation-tabs": "^2.11.1"
   },
   "devDependencies": {
     "@babel/core": "^7.15.4",
