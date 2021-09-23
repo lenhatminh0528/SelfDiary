@@ -1,8 +1,8 @@
 export const EnumRouteName = {
   InitView: 'InitView',
-  SettingView: 'Setting',
-  NoteScreen: 'Note',
+  SettingView: 'SettingView',
+  Notes: 'Notes',
   EditDetail: 'EditDetail',
-  ProfileScreen: 'Profile',
+  Profile: 'Profile',
   TabNavigation: 'TabNavigation',
 };

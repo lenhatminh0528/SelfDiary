@@ -58,9 +58,7 @@ const TabBar = ({state, descriptors, navigation}) => {
           }
         };
         const icon =
-          route.name === EnumRouteName.NoteScreen
-            ? Svgs.ic_note1
-            : Svgs.ic_user;
+          route.name === EnumRouteName.Notes ? Svgs.ic_note1 : Svgs.ic_user;
         const displayLabel = label;
         return (
           <TabCell

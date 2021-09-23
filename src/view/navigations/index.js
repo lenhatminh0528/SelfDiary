@@ -8,12 +8,13 @@ import SettingView from '../pages/setting';
 import NoteScreen from '../pages/note';
 import EditDetail from '../pages/editDetail';
 import {EnumRouteName} from '../../constants/routeName';
-import {getData} from '../../utils';
-import {EnumStorage} from '../../constants';
+import {getData, storeData} from '../../utils';
+import {EmitterKey, EnumStorage} from '../../constants';
 import SplashScreen from 'react-native-splash-screen';
 import ProfileScreen from '../pages/profile';
 import TabBar from '../components/tabbar';
 import navigationRef from './navigationService';
+import emitter from '../../utils/emitter';
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -53,14 +54,14 @@ const TabNavigation = () => {
   return (
     <Tab.Navigator
       backBehavior={false}
+      tabBarOptions={{
+        animationEnabled: false,
+      }}
       screenOptions={{headerShown: false}}
-      initialRouteName={EnumRouteName.NoteScreen}
+      initialRouteName={EnumRouteName.Notes}
       tabBar={props => <TabBar {...props} />}>
-      <Tab.Screen name={EnumRouteName.NoteScreen} component={NoteScreen} />
-      <Tab.Screen
-        name={EnumRouteName.ProfileScreen}
-        component={ProfileScreen}
-      />
+      <Tab.Screen name={EnumRouteName.Notes} component={NoteScreen} />
+      <Tab.Screen name={EnumRouteName.Profile} component={ProfileScreen} />
     </Tab.Navigator>
   );
 };
@@ -68,6 +69,7 @@ const TabNavigation = () => {
 const AppNavigation = () => {
   const [isSignIn, setSignIn] = useState(false);
   const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
     const getLogin = async () => {
       const signed = await getData(EnumStorage.signedIn);
@@ -78,12 +80,25 @@ const AppNavigation = () => {
     getLogin();
   }, []);
 
+  useEffect(() => {
+    const listener = emitter.addListener(
+      EmitterKey.CHANGE_STATUS,
+      ({isAuthorized}) => {
+        setSignIn(true);
+        storeData(isAuthorized, EnumStorage.signedIn);
+      },
+    );
+    return () => {
+      listener.remove();
+    };
+  }, []);
+
   if (isLoading) {
     return <View />;
   }
   return (
     <NavigationContainer ref={navigationRef}>
-      {isSignIn ? <AuthFlow /> : <RootFlow />}
+      {!isSignIn ? <AuthFlow /> : <RootFlow />}
     </NavigationContainer>
   );
 };

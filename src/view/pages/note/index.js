@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {View, TouchableOpacity, FlatList} from 'react-native';
 import HeaderContainer from '../../components/headerContainer';
 import Svgs from '../../../assets/images/svg';
@@ -9,7 +10,8 @@ import themedStyles from './styles';
 import globalStyle from '../../../constants/globalStyles';
 import {useTheme} from 'react-native-themed-styles';
 import {EnumRouteName} from '../../../constants/routeName';
-import {useNavigation} from '@react-navigation/native';
+// import {useNavigation} from '@react-navigation/native';
+
 const DATA = [
   {
     id: 1,
@@ -72,32 +74,25 @@ const NoteScreen = props => {
   const {navigation} = props;
   const [styles, theme] = useTheme(themedStyles);
   const [glbStyles] = useTheme(globalStyle);
-  // const navigation = useNavigation();
-
-  const pressLeft = () => {
-    console.log('press left');
-  };
 
   const onPressItem = item => {
-    console.log('press', item);
-    console.log('press', navigation);
-    navigation.natvigate(EnumRouteName.EditDetail, {item});
+    navigation.navigate(EnumRouteName.EditDetail, {item});
+  };
+
+  const onPressAddNew = () => {
+    navigation.navigate(EnumRouteName.EditDetail);
   };
 
   const renderItem = ({item}) => (
-    <NoteCell onPressCell={() => onPressItem(item)} item={item} />
+    <NoteCell onPress={() => onPressItem(item)} item={item} />
   );
-
-  const onPressAddNew = () => {
-    console.log('add new: ');
-  };
 
   return (
     <View style={glbStyles.flex1}>
       <HeaderContainer
-        onPressIconLeft={pressLeft}
-        iconLeft={Svgs.back}
-        title={'dash board'}
+        // onPressIconLeft={pressLeft}
+        // iconLeft={Svgs.back}
+        title={'Note Screen'}
         iconRightContent={
           <TouchableOpacity style={styles.iconRight}>
             <SvgXml fill={'white'} width={20} height={20} xml={Svgs.ic_trash} />
@@ -120,6 +115,12 @@ const NoteScreen = props => {
       />
     </View>
   );
+};
+NoteScreen.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+    popToTop: PropTypes.func,
+  }),
 };
 
 export default NoteScreen;

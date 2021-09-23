@@ -7,6 +7,8 @@ import Svgs from '../../../assets/images/svg';
 import loadingModal from '../../components/loadingModal';
 import useMergeState from '../../../utils/useMergeState';
 import LoadingModal from '../../components/loadingModal';
+import emitter from '../../../utils/emitter';
+import {EmitterKey} from '../../../constants';
 
 const InitView = props => {
   const {navigation} = props;
@@ -31,7 +33,8 @@ const InitView = props => {
     setState({isShowModal: true});
     setTimeout(() => {
       setState({isShowModal: false});
-      navigation.navigate(EnumRouteName.dashBoard);
+      // navigation.navigate(EnumRouteName.Notes);
+      emitter.emit(EmitterKey.CHANGE_STATUS, {isAuthorized: true});
     }, 3000);
   };
   const onBackDrop = () => {

@@ -5,6 +5,10 @@ export const EnumStorage = {
   signedIn: '@signedIn',
 };
 
+export const EmitterKey = {
+  CHANGE_STATUS: 'CHANGE_STATUS',
+};
+
 export const isIOs = Platform.isIOs;
 
 export const initTheme = {

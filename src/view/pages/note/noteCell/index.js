@@ -7,11 +7,11 @@ import globalStyle from '../../../../constants/globalStyles';
 import {useTheme} from 'react-native-themed-styles';
 
 const NoteCell = props => {
-  const {item, onPressCell} = props;
+  const {item, onPress} = props;
   const [styles, theme] = useTheme(themedStyles);
   const [glbStyles] = useTheme(globalStyle);
   return (
-    <TouchableOpacity onPress={onPressCell} style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.titleContent}>
         <Text style={glbStyles.font20}>{item.title}</Text>
         <SvgXml xml={Svgs.ic_bell} fill={'#1565c0'} width={16} height={16} />
