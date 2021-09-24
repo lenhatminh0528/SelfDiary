@@ -54,10 +54,15 @@ const TabNavigation = () => {
   return (
     <Tab.Navigator
       backBehavior={false}
-      tabBarOptions={{
-        animationEnabled: false,
+      screenOptions={{
+        headerShown: false,
+        // tabBarStyle: [
+        //   {
+        //     display: 'flex',
+        //   },
+        //   ,
+        // ],
       }}
-      screenOptions={{headerShown: false}}
       initialRouteName={EnumRouteName.Notes}
       tabBar={props => <TabBar {...props} />}>
       <Tab.Screen name={EnumRouteName.Notes} component={NoteScreen} />
@@ -98,7 +103,7 @@ const AppNavigation = () => {
   }
   return (
     <NavigationContainer ref={navigationRef}>
-      {!isSignIn ? <AuthFlow /> : <RootFlow />}
+      {isSignIn ? <AuthFlow /> : <RootFlow />}
     </NavigationContainer>
   );
 };

@@ -10,6 +10,7 @@ import ic_note1 from './ic_note1.svg';
 import ic_note2 from './ic_note2.svg';
 import ic_check from './ic_check.svg';
 import ic_clear from './ic_clear.svg';
+import ic_calendar_1 from './ic_calendar_1.svg';
 
 const Svgs = {
   ic_lock,
@@ -24,6 +25,7 @@ const Svgs = {
   ic_note2,
   ic_check,
   ic_clear,
+  ic_calendar_1,
 };
 
 export default Svgs;
