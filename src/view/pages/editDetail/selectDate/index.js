@@ -17,8 +17,14 @@ import DateTimeCell from '../dateTimeCell';
 import moment from 'moment';
 
 const SelectDate = props => {
-  const {styleContainer, item, toggleSwitch, isSwitchEnabled, dateSelected} =
-    props;
+  const {
+    styleContainer,
+    item,
+    toggleSwitch,
+    isSwitchEnabled,
+    dateSelected,
+    onPressIcon,
+  } = props;
   const [styles, theme] = useTheme(themedStyles);
   const [glbStyle] = useTheme(globalStyle);
   const [switchStatus, setSwitch] = useState(false);
@@ -57,7 +63,8 @@ const SelectDate = props => {
             style={[
               glbStyle.flex1,
               {
-                overflow: 'hidden',
+                flexWrap: 'wrap',
+                overflow: 'scroll',
                 flexDirection: 'row',
                 padding: 10,
                 borderWidth: 1,
@@ -71,12 +78,14 @@ const SelectDate = props => {
               );
             })}
           </View>
-          <SvgXml
-            xml={Svgs.ic_calendar_1}
-            width={30}
-            height={30}
-            fill={'blue'}
-          />
+          <TouchableOpacity onPress={onPressIcon}>
+            <SvgXml
+              xml={Svgs.ic_calendar_1}
+              width={30}
+              height={30}
+              fill={'blue'}
+            />
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -88,6 +97,7 @@ SelectDate.defaultProps = {
   isSwitchOn: false,
   toggleSwitch: () => {},
   dateSelected: [],
+  onPressIcon: () => {},
 };
 
 SelectDate.propTypes = {
@@ -95,6 +105,7 @@ SelectDate.propTypes = {
   isSwitchOn: PropTypes.bool,
   toggleSwitch: PropTypes.func,
   dateSelected: PropTypes.array,
+  onPressIcon: PropTypes.func,
 };
 
 export default SelectDate;

@@ -7,7 +7,7 @@ const themedStyles = styleSheetFactory(theme => ({
     elevation: 5,
     marginTop: 5,
     flexDirection: 'row',
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: 'black',
     borderRadius: 20,
     paddingVertical: 10,

@@ -11,6 +11,11 @@ import ic_note2 from './ic_note2.svg';
 import ic_check from './ic_check.svg';
 import ic_clear from './ic_clear.svg';
 import ic_calendar_1 from './ic_calendar_1.svg';
+import ic_arrow from './ic_arrow.svg';
+import ic_arrow1 from './ic_arrow1.svg';
+import ic_arrow2 from './ic_arrow2.svg';
+import ic_noDocuments from './ic_noDocuments.svg';
+import ic_noConnection from './ic_noConnection.svg';
 
 const Svgs = {
   ic_lock,
@@ -26,6 +31,11 @@ const Svgs = {
   ic_check,
   ic_clear,
   ic_calendar_1,
+  ic_arrow,
+  ic_arrow1,
+  ic_arrow2,
+  ic_noDocuments,
+  ic_noConnection,
 };
 
 export default Svgs;

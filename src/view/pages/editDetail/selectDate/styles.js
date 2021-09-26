@@ -5,6 +5,8 @@ const themedStyles = styleSheetFactory(theme => ({
     backgroundColor: 'white',
     padding: 10,
     paddingRight: -10,
+    borderRadius: 8,
+    elevation: 8,
   },
   iconRight: {
     paddingRight: 20,

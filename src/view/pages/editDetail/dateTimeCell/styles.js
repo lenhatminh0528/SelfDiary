@@ -2,13 +2,27 @@ import {styleSheetFactory} from '../../../../constants/themes';
 
 const themedStyle = styleSheetFactory(theme => ({
   container: {
-    padding: 5,
-    borderWidth: 1,
-    borderColor: 'red',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 4,
-    paddingVertical: 2,
+    justifyContent: 'center',
+    backgroundColor: '#ef5350',
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    marginRight: 8,
+    borderRadius: 8,
+    marginBottom: 5,
+  },
+  iconRight: {
+    padding: 4,
+    backgroundColor: '#6d6d6d',
+    borderRadius: 10,
+  },
+  date: {
+    color: 'white',
+    fontSize: 13,
+  },
+  marginRight: {
+    marginRight: 5,
   },
 }));
 export default themedStyle;

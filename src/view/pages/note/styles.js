@@ -20,7 +20,17 @@ const themedStyles = styleSheetFactory(theme => ({
     elevation: 6,
   },
   padding10: {
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  emptyView: {
+    alignItems: 'center',
+    width: '100%',
+    marginTop: 80,
+  },
+  imgNodocs: {
+    width: 200,
+    height: 170,
   },
 }));
 export default themedStyles;

@@ -7,6 +7,7 @@ export const LIGHT_THEME = {
   blue_2: 'rgba(30, 136, 229, 0.3777)',
   blue_3: '#1E88E5',
   blue_4: '#3C98E8',
+  blue_5: '#1565c0',
   text_blue: '#228AE4',
   text: 'rgba(0,0,0,0.87)',
   black: '#000000',

@@ -1,19 +1,9 @@
-import {styleSheetFactory} from '../../../constants/themes';
-import {screenHeight} from '../../../utils';
+import {styleSheetFactory} from '../../../../constants/themes';
+import {screenHeight} from '../../../../utils';
 
-const themedStyles = styleSheetFactory(theme => ({
+const themedStyle = styleSheetFactory(theme => ({
   container: {
     flex: 1,
-  },
-  header: {
-    backgroundColor: theme.blue_5,
-  },
-  iconRight: {
-    paddingRight: 20,
-    marginLeft: 10,
-  },
-  context: {
-    padding: 10,
   },
   inputContext: {
     elevation: 5,
@@ -44,5 +34,4 @@ const themedStyles = styleSheetFactory(theme => ({
     textAlign: 'right',
   },
 }));
-
-export default themedStyles;
+export default themedStyle;
