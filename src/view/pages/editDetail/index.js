@@ -1,39 +1,27 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  ScrollView,
-} from 'react-native';
+import {View, ScrollView} from 'react-native';
 import Svgs from '../../../assets/images/svg';
 import HeaderContainer from '../../components/headerContainer';
 import themedStyles from './styles';
 import {useTheme} from 'react-native-themed-styles';
 import globalStyle from '../../../constants/globalStyles';
-import {SvgXml} from 'react-native-svg';
 import useMergeState from '../../../utils/useMergeState';
 import SelectDate from './selectDate';
 import moment from 'moment';
 import DateTimeModal from '../../components/dateTimeModal';
 import MessageCell from './messageCell';
-import _ from 'lodash';
-
-const DATA = {
-  title: 'Title text 1',
-  content:
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in',
-  isNotify: false,
-  timeNoti: 'DAILY',
-  dateNotify: [],
-  createdDate: moment().toISOString(),
-};
+import ButtonCT from '../../components/buttonCT';
+import LoadingModal from '../../components/loadingModal';
+import MessageModal from '../../components/messageModal';
+import {useIsFocused} from '@react-navigation/core';
+import {screenHeight} from '../../../utils';
 
 const EditDetail = props => {
   const [styles, theme] = useTheme(themedStyles);
   const [glbStyle] = useTheme(globalStyle);
   const {navigation, route} = props;
-
+  const isFocused = useIsFocused();
   const {item, upDateList} = route.params || {
     item: {
       title: '',
@@ -53,14 +41,28 @@ const EditDetail = props => {
     dateSelected: item.dateSelected || [],
     data: item || {},
     isShowModal: false,
+    isShowLoading: false,
+    isShowMessage: false,
   });
 
+  useEffect(() => {
+    if (isFocused) {
+      if (item.dateSelected.length > 0) {
+        setState({isSwitchOn: true});
+      }
+    }
+  }, [isFocused]);
+
   const onHideModal = data => {
-    setState({isShowModal: false, dateSelected: data});
+    if (state.isShowLoading) {
+      setState({isShowLoading: false});
+    } else {
+      setState({isShowModal: false, dateSelected: data});
+    }
   };
 
   const pressLeft = () => {
-    navigation.goBack();
+    setState({isShowMessage: true});
   };
 
   const toggleSwitch = () => {
@@ -78,19 +80,29 @@ const EditDetail = props => {
     setState({title: text});
   };
 
-  const onPressIconRight = () => {
-    console.log('press right');
-    const data = {
-      id: item.id,
-      title: state.title,
-      message: state.message,
-      dateSelected: state.dateSelected,
-      isNotify: false,
-      timeNoti: 'DAILY',
-      createdDate: moment().toISOString(),
-    };
+  const onPressDone = () => {
+    setState({isShowLoading: true});
+    setTimeout(() => {
+      const data = {
+        id: item.id,
+        title: state.title,
+        message: state.message,
+        dateSelected: state.dateSelected,
+        isNotify: false,
+        timeNoti: 'DAILY',
+        createdDate: moment().toISOString(),
+      };
+      navigation.goBack();
+      upDateList(data);
+    }, 3000);
+  };
+
+  const onPressConfirm = () => {
     navigation.goBack();
-    upDateList(data);
+  };
+
+  const onPressCancel = () => {
+    setState({isShowMessage: false});
   };
 
   return (
@@ -103,16 +115,22 @@ const EditDetail = props => {
         iconRightContent={
           state.title !== '' &&
           state.message !== '' && (
-            <TouchableOpacity
-              onPress={onPressIconRight}
-              style={styles.iconRight}>
-              <SvgXml
-                fill={'white'}
-                width={20}
-                height={20}
-                xml={Svgs.ic_check}
-              />
-            </TouchableOpacity>
+            // <TouchableOpacity
+            //   onPress={onPressIconRight}
+            //   style={styles.iconRight}>
+            //   <SvgXml
+            //     fill={'white'}
+            //     width={20}
+            //     height={20}
+            //     xml={Svgs.ic_check}
+            //   />
+            // </TouchableOpacity>
+            <ButtonCT
+              onPress={onPressDone}
+              containerStyle={{marginRight: 10}}
+              type={'TEXTBOLD'}
+              title={'DONE'}
+            />
           )
         }
       />
@@ -126,6 +144,9 @@ const EditDetail = props => {
         />
         {/*CONTENT */}
         <MessageCell
+          styleContainer={{
+            height: state.isSwitchOn ? screenHeight - 264 : screenHeight - 156,
+          }}
           onChangeMessage={onChangeMessage}
           onChangeTitle={onChangeTitle}
           createdDate={moment(state.data.createdDate).format(
@@ -139,6 +160,19 @@ const EditDetail = props => {
         data={state.dateSelected}
         isVisible={state.isShowModal}
         onBackdropPress={onHideModal}
+      />
+      <LoadingModal
+        onBackdropPress={onHideModal}
+        isVisible={state.isShowLoading}
+      />
+      <MessageModal
+        title={'Confirmation!'}
+        cancelTitle={'Cancel'}
+        confirmTitle={'Confirm'}
+        message={'Do you wanna cancel the process! All data will be removed.'}
+        onPressConfirm={onPressConfirm}
+        onPressCancel={onPressCancel}
+        isVisible={state.isShowMessage}
       />
     </View>
   );

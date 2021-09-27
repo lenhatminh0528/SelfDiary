@@ -1,17 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, Keyboard} from 'react-native';
-import {EnumRouteName} from '../../../constants/routeName';
 import InputCodeCT from '../../components/inputCodeCT';
 import {SvgXml} from 'react-native-svg';
 import Svgs from '../../../assets/images/svg';
-import loadingModal from '../../components/loadingModal';
 import useMergeState from '../../../utils/useMergeState';
 import LoadingModal from '../../components/loadingModal';
 import emitter from '../../../utils/emitter';
 import {EmitterKey} from '../../../constants';
 
 const InitView = props => {
-  const {navigation} = props;
   const CELL_COUNT = 4;
   const [code, setCode] = useState('');
   const [state, setState] = useMergeState({

@@ -36,6 +36,7 @@ const themedStyles = styleSheetFactory(theme => ({
   titleContent: {
     justifyContent: 'space-between',
     flex: 1,
+    alignItems: 'center',
     flexDirection: 'row',
   },
   messageText: {

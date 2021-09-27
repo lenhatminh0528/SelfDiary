@@ -56,6 +56,7 @@ const SelectDate = props => {
             marginVertical: 10,
             marginRight: 10,
             flex: 1,
+            // width: '100%',
             alignItems: 'center',
             flexDirection: 'row',
           }}>
@@ -67,8 +68,9 @@ const SelectDate = props => {
                 overflow: 'scroll',
                 flexDirection: 'row',
                 padding: 10,
-                borderWidth: 1,
-                borderColor: theme.gray_2,
+                alignItems: 'center',
+                borderRadius: 8,
+                // backgroundColor: '#ffcdd2',
                 marginRight: 10,
               },
             ]}>

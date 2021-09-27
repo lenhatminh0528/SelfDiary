@@ -6,7 +6,6 @@ const themedStyle = styleSheetFactory(theme => ({
     flex: 1,
   },
   inputContext: {
-    elevation: 5,
     flex: 1,
     marginTop: 10,
     borderRadius: 5,

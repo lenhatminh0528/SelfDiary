@@ -16,6 +16,7 @@ import ic_arrow1 from './ic_arrow1.svg';
 import ic_arrow2 from './ic_arrow2.svg';
 import ic_noDocuments from './ic_noDocuments.svg';
 import ic_noConnection from './ic_noConnection.svg';
+import cancel from './cancel.svg';
 
 const Svgs = {
   ic_lock,
@@ -36,6 +37,7 @@ const Svgs = {
   ic_arrow2,
   ic_noDocuments,
   ic_noConnection,
+  cancel,
 };
 
 export default Svgs;

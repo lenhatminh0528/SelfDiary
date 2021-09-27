@@ -12,8 +12,8 @@ import {useTheme} from 'react-native-themed-styles';
 import {EnumRouteName} from '../../../constants/routeName';
 import useMergeState from '../../../utils/useMergeState';
 import PNG from '../../../assets/images/png';
+import MessageModal from '../../components/messageModal';
 import moment from 'moment';
-import {update} from 'lodash';
 const DATA = [
   {
     id: 1,
@@ -62,6 +62,8 @@ const NoteScreen = props => {
 
   const [state, setState] = useMergeState({
     data: DATA,
+    isShowModal: false,
+    deletedId: '',
   });
 
   const onPressItem = item => {
@@ -69,6 +71,17 @@ const NoteScreen = props => {
       item,
       upDateList: upDateList,
     });
+  };
+
+  const onPressConfirm = () => {
+    const newData = [...state.data];
+    const index = newData.findIndex(obj => obj.id === state.deletedId);
+    newData.splice(index, 1);
+    setState({data: newData, isShowModal: false, deletedId: ''});
+  };
+
+  const onPressCancel = () => {
+    setState({isShowModal: false});
   };
 
   const onPressAddNew = () => {
@@ -85,7 +98,6 @@ const NoteScreen = props => {
   };
 
   const upDateList = item => {
-    console.log('item update: ', item);
     const newData = [...state.data];
     if (state.data.some(obj => obj.id === item.id)) {
       const index = state.data.findIndex(obj => obj.id === item.id);
@@ -93,7 +105,6 @@ const NoteScreen = props => {
       newData[index].message = item.message;
       newData[index].dateSelected = item.dateSelected;
     } else {
-      console.log('add neew');
       newData.push(item);
     }
 
@@ -101,10 +112,7 @@ const NoteScreen = props => {
   };
 
   const onPressDelete = id => {
-    const newData = [...state.data];
-    const index = newData.findIndex(obj => obj.id === id);
-    newData.splice(index, 1);
-    setState({data: newData});
+    setState({isShowModal: true, deletedId: id});
   };
 
   const renderItem = ({item}) => (
@@ -157,6 +165,15 @@ const NoteScreen = props => {
         iconColor={theme.white}
         onPress={onPressAddNew}
         icon={Svgs.ic_add}
+      />
+      <MessageModal
+        title={'Confirmation!'}
+        cancelTitle={'No'}
+        confirmTitle={'Yes'}
+        message={'Do you want to delete this note'}
+        onPressCancel={onPressCancel}
+        onPressConfirm={onPressConfirm}
+        isVisible={state.isShowModal}
       />
     </View>
   );
