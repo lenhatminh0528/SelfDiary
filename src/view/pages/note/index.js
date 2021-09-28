@@ -14,6 +14,9 @@ import useMergeState from '../../../utils/useMergeState';
 import PNG from '../../../assets/images/png';
 import MessageModal from '../../components/messageModal';
 import moment from 'moment';
+import {pushNoti} from '../../../utils';
+import PushNotificationComponent from '../../components/pushNotification';
+
 const DATA = [
   {
     id: 1,
@@ -67,10 +70,11 @@ const NoteScreen = props => {
   });
 
   const onPressItem = item => {
-    navigation.navigate(EnumRouteName.EditDetail, {
-      item,
-      upDateList: upDateList,
-    });
+    pushNoti();
+    // navigation.navigate(EnumRouteName.EditDetail, {
+    //   item,
+    //   upDateList: upDateList,
+    // });
   };
 
   const onPressConfirm = () => {
@@ -143,6 +147,7 @@ const NoteScreen = props => {
 
   return (
     <View style={[glbStyles.flex1, {backgroundColor: theme.white}]}>
+      <PushNotificationComponent />
       <HeaderContainer
         title={'Note Screen'}
         // iconRightContent={
