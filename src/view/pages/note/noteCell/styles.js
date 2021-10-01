@@ -5,6 +5,7 @@ const themedStyles = styleSheetFactory(theme => ({
     flex: 1,
     opacity: 1,
     width: '100%',
+    // height: 50,
     borderRadius: 10,
     // borderWidth: 1,
     marginVertical: 5,

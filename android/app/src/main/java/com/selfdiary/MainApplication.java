@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.nozbe.watermelondb.WatermelonDBPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.horcrux.svg.SvgPackage;
@@ -17,6 +18,12 @@ import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Arrays;
+import com.facebook.react.bridge.JSIModuleSpec;
+import com.facebook.react.bridge.JSIModulePackage;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.JavaScriptContextHolder;
+import com.nozbe.watermelondb.jsi.WatermelonDBJSIPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -27,6 +34,22 @@ public class MainApplication extends Application implements ReactApplication {
           return BuildConfig.DEBUG;
         }
 
+        @Override
+        protected JSIModulePackage getJSIModulePackage() {
+          return new JSIModulePackage() {
+        @Override
+        public List<JSIModuleSpec> getJSIModules(
+          final ReactApplicationContext reactApplicationContext,
+          final JavaScriptContextHolder jsContext
+         ) {
+          List<JSIModuleSpec> modules = Arrays.asList();
+          modules.addAll(new WatermelonDBJSIPackage().getJSIModules(reactApplicationContext, jsContext));
+           // ⬅️ add more JSI packages here by conventions above
+
+          return modules;
+         }
+       };
+      };
         @Override
         protected List<ReactPackage> getPackages() {
           @SuppressWarnings("UnnecessaryLocalVariable")

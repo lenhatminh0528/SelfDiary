@@ -29,10 +29,6 @@ const SelectDate = props => {
   const [glbStyle] = useTheme(globalStyle);
   const [switchStatus, setSwitch] = useState(false);
 
-  useEffect(() => {
-    console.log('dateSelected: ', dateSelected);
-  }, [dateSelected]);
-
   return (
     <View style={[styles.container, styleContainer]}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>

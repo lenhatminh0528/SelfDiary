@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import Svgs from '../../../../assets/images/svg';
@@ -6,28 +6,30 @@ import themedStyles from './styles';
 import globalStyle from '../../../../constants/globalStyles';
 import {useTheme} from 'react-native-themed-styles';
 import DateTimeCell from '../../editDetail/dateTimeCell';
+import withObservables from '@nozbe/with-observables';
 import moment from 'moment';
+
 const NoteCell = props => {
   const {item, onPress, onDelete} = props;
   const [styles, theme] = useTheme(themedStyles);
   const [glbStyles] = useTheme(globalStyle);
+  const [selectedDates, setSelectedDates] = useState([]);
+
+  useEffect(() => {
+    getDates();
+  }, []);
+
+  const getDates = async () => {
+    const dates = await item.selectedDates;
+    setSelectedDates(dates);
+  };
+
   return (
     <>
       <TouchableOpacity style={styles.container} onPress={onPress}>
         <View style={styles.titleContent}>
           <Text style={glbStyles.font20}>{item.title}</Text>
-          <View
-          // style={{flexDirection: 'row', marginBottom: 5}}
-          >
-            {/* <TouchableOpacity
-            style={{padding: 5, backgroundColor: '#d1c4e9', borderRadius: 8}}>
-            <SvgXml
-              xml={Svgs.ic_bell}
-              fill={'#f44336'}
-              width={16}
-              height={16}
-            />
-          </TouchableOpacity> */}
+          <View>
             <TouchableOpacity
               onPress={() => onDelete(item.id)}
               style={styles.icTrash}>
@@ -43,9 +45,9 @@ const NoteCell = props => {
         <Text numberOfLines={2} style={styles.messageText}>
           {item.message}
         </Text>
-        {item.dateSelected.length > 0 && <View style={styles.footer} />}
+        {selectedDates.length > 0 && <View style={styles.footer} />}
         <View style={[glbStyles.flex1, styles.notiTime]}>
-          {(item.dateSelected ?? []).map((date, index) => {
+          {(selectedDates ?? []).map((date, index) => {
             return (
               <DateTimeCell
                 isShowIcon={false}
@@ -56,11 +58,15 @@ const NoteCell = props => {
           })}
         </View>
         <Text style={styles.createdDay}>
-          {moment(item.createdDate).format('DD/MM/YY')}
+          {moment(item.timeCreated).format('DD/MM/YY')}
         </Text>
       </TouchableOpacity>
     </>
   );
 };
 
+// const enhance = withObservables(['note'], ({note}) => ({
+//   note: note,
+//   selectedDates: note.selectedDates,
+// }));
 export default NoteCell;

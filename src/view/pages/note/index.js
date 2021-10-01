@@ -1,9 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {View, TouchableOpacity, FlatList, Text, Image} from 'react-native';
+import {View, FlatList, Text, Image} from 'react-native';
 import HeaderContainer from '../../components/headerContainer';
 import Svgs from '../../../assets/images/svg';
-import {SvgXml} from 'react-native-svg';
 import ButtonCT from '../../components/buttonCT';
 import NoteCell from './noteCell';
 import themedStyles from './styles';
@@ -16,6 +15,13 @@ import MessageModal from '../../components/messageModal';
 import moment from 'moment';
 import {pushNoti} from '../../../utils';
 import PushNotificationComponent from '../../components/pushNotification';
+import withObservables from '@nozbe/with-observables';
+import {database} from '../../../constants/localStorageModal/database';
+import {
+  observeNotes,
+  saveNote,
+} from '../../../constants/localStorageModal/helpers';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const DATA = [
   {
@@ -26,21 +32,27 @@ const DATA = [
     createdDate: moment().toISOString(),
     dateSelected: ['2021-09-09', '2021-09-19', '2021-09-10', '2021-09-11'],
   },
-  // {
-  //   id: 2,
-  //   title: 'title 2',
-  //   message: 'content of title 2',
-  // },
-  // {
-  //   id: 3,
-  //   title: 'title 3',
-  //   message: 'content of title 3',
-  // },
-  // {
-  //   id: 4,
-  //   title: 'title 3',
-  //   message: 'content of title 3',
-  // },
+  {
+    id: 2,
+    title: 'title 2',
+    message: 'content of title 2',
+    createdDate: moment().add(1, 'month').toISOString(),
+    dateSelected: ['2021-08-09', '2021-09-20'],
+  },
+  {
+    id: 3,
+    title: 'title 3',
+    message: 'content of title 3',
+    createdDate: moment().add(1, 'year').toISOString(),
+    dateSelected: ['2021-08-09', '2021-07-25'],
+  },
+  {
+    id: 4,
+    title: 'title 3',
+    message: 'content of title 3',
+    createdDate: moment().add(2, 'month').toISOString(),
+    dateSelected: ['2021-03-20', '2021-11-20'],
+  },
   // {
   //   id: 5,
   //   title: 'title 3',
@@ -58,23 +70,91 @@ const DATA = [
   // },
 ];
 
+const createData = () => {
+  try {
+    database.write(async action => {
+      const p = [];
+      const sd = [];
+      // await action.subAction(() => database.unsafeResetDatabase());      //subaction is deprecated
+      await database.unsafeResetDatabase();
+      DATA.forEach(data => {
+        // Database.get(tableName) is now a shortcut for Database.collections.get(tableName)
+        const t = database.get('notes').prepareCreate(note => {
+          note.title = data.title;
+          note.message = data.message;
+          note.timeCreated = data.createdDate;
+        });
+        p.push(t);
+        data.dateSelected.forEach(date => {
+          const d = database.get('selectedDates').prepareCreate(selected => {
+            selected.date = moment(date).toDate();
+            selected.note.set(t);
+          });
+          sd.push(d);
+        });
+      });
+      const all = [...p, ...sd];
+      database.batch(...all);
+      return all.length;
+    });
+
+    // DATA.forEach(data => {
+    //   database.write(async action => {
+    //     console.log('actions: ', action);
+    //     console.log('1');
+    //     // await action.subAction(() => database.unsafeResetDatabase());      //subaction is deprecated
+    //     action.callReader(() => database.unsafeResetDatabase());
+    //     console.log('2');
+    //     const n = database.get('notes').prepareCreate(note => {
+    //       note.title = data.title;
+    //       note.message = data.message;
+    //       note.timeCreated = data.createdDate;
+    //     });
+
+    //   });
+    // });
+    console.log('createData successful');
+  } catch (error) {
+    console.log('error create data: ', error);
+  }
+};
+
 const NoteScreen = props => {
-  const {navigation} = props;
+  const {navigation, notes} = props;
   const [styles, theme] = useTheme(themedStyles);
   const [glbStyles] = useTheme(globalStyle);
 
   const [state, setState] = useMergeState({
-    data: DATA,
+    // data: DATA,
+    data: notes || [],
     isShowModal: false,
     deletedId: '',
   });
 
-  const onPressItem = item => {
-    pushNoti();
-    // navigation.navigate(EnumRouteName.EditDetail, {
-    //   item,
-    //   upDateList: upDateList,
-    // });
+  // const notes = [];
+
+  const onPressItem = async item => {
+    console.log('item: ', item.selectedDates);
+    // pushNoti();
+    navigation.navigate(EnumRouteName.EditDetail, {
+      item,
+      upDateList: upDateList,
+    });
+    // const data = await database
+    //   .get('notes')
+    //   // .query(Q.where('title', Q.like(`%${Q.sanitizeLikeString('title 1')}%`)));
+    //   .query();
+    // const date = await database.get('selectedDates').query();
+    // const child = await data[0].selectedDates; //chi co the goi child = cach await them 1 thang khac chu khong dung truc tiep data[0].selected_dates
+    // console.log('notedatafet: ', data[0].selectedDates);
+    // console.log('child: ', child);
+    // console.log('notedatafet: ', data[1].title);
+    // console.log('notedatafet: ', data[1].message);
+    // console.log('notedatafet: ', data[1].timeCreated);
+    // console.log('notedatafet: ', data[1].selectedDates);
+
+    // console.log('date: ', moment(date[0].date).format('YYYY-MM-DD'));
+    // console.log('date0: ', date[0]);
   };
 
   const onPressConfirm = () => {
@@ -157,8 +237,8 @@ const NoteScreen = props => {
         // }
       />
       <FlatList
-        data={state.data}
-        keyExtractor={item => item?.id}
+        data={notes}
+        keyExtractor={item => item.id}
         contentContainerStyle={styles.padding10}
         renderItem={renderItem}
         ListEmptyComponent={renderEmpty}
@@ -183,6 +263,7 @@ const NoteScreen = props => {
     </View>
   );
 };
+
 NoteScreen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func,
@@ -190,4 +271,16 @@ NoteScreen.propTypes = {
   }),
 };
 
-export default NoteScreen;
+const enhance = withObservables(
+  ['notes'],
+  ({}) => ({
+    notes: database.get('notes').query(),
+  }),
+  // {
+  //   const observables = ['id', 'title', 'message'];
+  //   return {
+  //     notes: database.get('notes').query().observeWithColumns(observables),
+  //   };
+  // }
+);
+export default enhance(NoteScreen);

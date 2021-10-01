@@ -16,6 +16,8 @@ target 'SelfDiary' do
 
   pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
+  pod 'WatermelonDB', :path => '../node_modules/@nozbe/watermelondb'
+
   target 'SelfDiaryTests' do
     inherit! :complete
     # Pods for testing

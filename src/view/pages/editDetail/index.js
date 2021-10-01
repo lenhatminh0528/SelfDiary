@@ -38,7 +38,7 @@ const EditDetail = props => {
     isSwitchOn: false,
     title: item.title || '',
     message: item.message || '',
-    dateSelected: item.dateSelected || [],
+    dateSelected: [],
     data: item || {},
     isShowModal: false,
     isShowLoading: false,
@@ -47,11 +47,17 @@ const EditDetail = props => {
 
   useEffect(() => {
     if (isFocused) {
-      if (item.dateSelected.length > 0) {
-        setState({isSwitchOn: true});
-      }
+      getInit();
     }
   }, [isFocused]);
+
+  const getInit = async () => {
+    const dates = (await item.selectedDates) || [];
+    setState({dateSelected: dates});
+    if (dates.length > 0) {
+      setState({isSwitchOn: true});
+    }
+  };
 
   const onHideModal = data => {
     if (state.isShowLoading) {

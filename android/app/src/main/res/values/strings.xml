@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SelfDiary</string>
+    <string name="default_notification_channel_id">Local notification channel</string>
+    <string name="default_notification_channel_name">Local notification</string>
 </resources>
