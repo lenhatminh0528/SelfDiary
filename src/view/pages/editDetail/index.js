@@ -55,11 +55,12 @@ const EditDetail = props => {
 
   const getInit = async () => {
     const dates = (await item.selectedDates) || [];
-    setState({dateSelected: dates});
+    const mapDates = [];
+    dates.forEach(d => mapDates.push(d.date));
+    setState({dateSelected: mapDates});
     if (dates.length > 0) {
       setState({isSwitchOn: true});
     }
-    console.log('type: ', item.type);
   };
 
   const onHideModal = data => {

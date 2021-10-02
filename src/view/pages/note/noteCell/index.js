@@ -10,19 +10,9 @@ import withObservables from '@nozbe/with-observables';
 import moment from 'moment';
 
 const NoteCell = props => {
-  const {item, onPress, onDelete} = props;
+  const {item, onPress, onDelete, selectedDates} = props;
   const [styles, theme] = useTheme(themedStyles);
   const [glbStyles] = useTheme(globalStyle);
-  const [selectedDates, setSelectedDates] = useState([]);
-
-  useEffect(() => {
-    getDates();
-  }, []);
-
-  const getDates = async () => {
-    const dates = await item.selectedDates;
-    setSelectedDates(dates);
-  };
 
   return (
     <>
@@ -52,7 +42,7 @@ const NoteCell = props => {
               <DateTimeCell
                 isShowIcon={false}
                 key={index}
-                date={moment(date).format('DD-MM')}
+                date={moment(date.date).format('DD-MM')}
               />
             );
           })}
@@ -65,8 +55,7 @@ const NoteCell = props => {
   );
 };
 
-// const enhance = withObservables(['note'], ({note}) => ({
-//   note: note,
-//   selectedDates: note.selectedDates,
-// }));
-export default NoteCell;
+const enhance = withObservables(['note'], ({item}) => ({
+  selectedDates: item.selectedDates,
+}));
+export default enhance(NoteCell);
