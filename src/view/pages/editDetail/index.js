@@ -22,17 +22,17 @@ const EditDetail = props => {
   const [glbStyle] = useTheme(globalStyle);
   const {navigation, route} = props;
   const isFocused = useIsFocused();
-  const {item, upDateList} = route.params || {
-    item: {
-      title: '',
-      message: '',
-      isNotify: false,
-      timeNoti: 'DAILY',
-      dateSelected: [],
-      createdDate: moment().toISOString(),
-    },
-    upDateList: () => {},
+  const item = route.params.item || {
+    title: '',
+    type: 'NEW',
+    message: '',
+    isNotify: false,
+    timeNoti: 'DAILY',
+    dateSelected: [],
+    createdDate: moment().toISOString(),
   };
+
+  const upDateList = route.params.upDateList;
 
   const [state, setState] = useMergeState({
     isSwitchOn: false,
@@ -48,6 +48,8 @@ const EditDetail = props => {
   useEffect(() => {
     if (isFocused) {
       getInit();
+      const t = route.params.item;
+      console.log('route param: ', t);
     }
   }, [isFocused]);
 
@@ -57,6 +59,7 @@ const EditDetail = props => {
     if (dates.length > 0) {
       setState({isSwitchOn: true});
     }
+    console.log('type: ', item.type);
   };
 
   const onHideModal = data => {
@@ -92,6 +95,7 @@ const EditDetail = props => {
       const data = {
         id: item.id,
         title: state.title,
+        type: item.type,
         message: state.message,
         dateSelected: state.dateSelected,
         isNotify: false,

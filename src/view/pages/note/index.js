@@ -17,11 +17,7 @@ import {pushNoti} from '../../../utils';
 import PushNotificationComponent from '../../components/pushNotification';
 import withObservables from '@nozbe/with-observables';
 import {database} from '../../../constants/localStorageModal/database';
-import {
-  observeNotes,
-  saveNote,
-} from '../../../constants/localStorageModal/helpers';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {update} from 'lodash';
 
 const DATA = [
   {
@@ -76,7 +72,7 @@ const createData = () => {
       const p = [];
       const sd = [];
       // await action.subAction(() => database.unsafeResetDatabase());      //subaction is deprecated
-      await database.unsafeResetDatabase();
+      // await database.unsafeResetDatabase();
       DATA.forEach(data => {
         // Database.get(tableName) is now a shortcut for Database.collections.get(tableName)
         const t = database.get('notes').prepareCreate(note => {
@@ -123,7 +119,6 @@ const NoteScreen = props => {
   const {navigation, notes} = props;
   const [styles, theme] = useTheme(themedStyles);
   const [glbStyles] = useTheme(globalStyle);
-
   const [state, setState] = useMergeState({
     // data: DATA,
     data: notes || [],
@@ -131,10 +126,11 @@ const NoteScreen = props => {
     deletedId: '',
   });
 
-  // const notes = [];
+  // useEffect(() => {
+  //   createData();
+  // }, []);
 
   const onPressItem = async item => {
-    console.log('item: ', item.selectedDates);
     // pushNoti();
     navigation.navigate(EnumRouteName.EditDetail, {
       item,
@@ -170,29 +166,64 @@ const NoteScreen = props => {
 
   const onPressAddNew = () => {
     navigation.navigate(EnumRouteName.EditDetail, {
-      item: {
-        id: state.data.length >= 0 ? state.data.length + 1 : 0,
-        title: '',
-        context: '',
-        createdDate: moment().toISOString(),
-        dateSelected: [],
-      },
+      // item: {
+      //   // id: state.data.length >= 0 ? state.data.length + 1 : 0,
+      //   title: '',
+      //   context: '',
+      //   createdDate: moment().toISOString(),
+      //   dateSelected: [],
+      // },
       upDateList: upDateList,
     });
   };
 
-  const upDateList = item => {
-    const newData = [...state.data];
-    if (state.data.some(obj => obj.id === item.id)) {
-      const index = state.data.findIndex(obj => obj.id === item.id);
-      newData[index].title = item.title;
-      newData[index].message = item.message;
-      newData[index].dateSelected = item.dateSelected;
-    } else {
-      newData.push(item);
-    }
+  const upDateList = async item => {
+    console.log('item: ', item);
+    console.log('item: ', item.dateSelected);
+    database.write(async () => {
+      if (item.type === 'NEW') {
+        const note = database.get('notes').prepareCreate(newNote => {
+          newNote.title = item.title;
+          newNote.message = item.message;
+          newNote.timeCreated = item.createdDate;
+        });
+        const updateDates = [];
+        if (item.dateSelected.length > 0) {
+          item.dateSelected.forEach(time => {
+            const updateSelectedDates = database
+              .get('selectedDates')
+              .prepareCreate(date => {
+                date.date = time;
+                date.note.set(note);
+              });
+            updateDates.push(updateSelectedDates);
+          });
+        }
+        const all = [...[note], ...updateDates];
+        console.log('all: ', all);
+        database.batch(...all);
+        return all;
+      } else {
+        // const note = database.get('notes').find(item.id);
+        // const updateNote = note.prepareUpdate(data => {
+        //   data.title = item.data;
+        //   data.message = item.message;
+        // });
+        // const updateSelectedDates = database.get('selectedDates').;
+      }
+    });
 
-    setState({data: newData});
+    // const newData = [...state.data];
+    // if (state.data.some(obj => obj.id === item.id)) {
+    //   const index = state.data.findIndex(obj => obj.id === item.id);
+    //   newData[index].title = item.title;
+    //   newData[index].message = item.message;
+    //   newData[index].dateSelected = item.dateSelected;
+    // } else {
+    //   newData.push(item);
+    // }
+
+    // setState({data: newData});
   };
 
   const onPressDelete = id => {

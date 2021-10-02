@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {LogBox, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -15,6 +15,10 @@ import ProfileScreen from '../pages/profile';
 import TabBar from '../components/tabbar';
 import navigationRef from './navigationService';
 import emitter from '../../utils/emitter';
+
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
 const AuthStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
