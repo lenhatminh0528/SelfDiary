@@ -40,7 +40,7 @@ const AuthFlow = () => {
 const RootFlow = () => {
   return (
     <Root.Navigator
-      // initialRouteName={EnumRouteName.TabNavigation}
+      initialRouteName={EnumRouteName.TabNavigation}
       screenOptions={{
         headerShown: false,
       }}>
@@ -60,12 +60,6 @@ const TabNavigation = () => {
       backBehavior={false}
       screenOptions={{
         headerShown: false,
-        // tabBarStyle: [
-        //   {
-        //     display: 'flex',
-        //   },
-        //   ,
-        // ],
       }}
       initialRouteName={EnumRouteName.Notes}
       tabBar={props => <TabBar {...props} />}>

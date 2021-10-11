@@ -4,12 +4,17 @@ import InputCodeCT from '../../components/inputCodeCT';
 import {SvgXml} from 'react-native-svg';
 import Svgs from '../../../assets/images/svg';
 import useMergeState from '../../../utils/useMergeState';
+import themedStyles from './styles';
+import {useTheme} from 'react-native-themed-styles';
 import LoadingModal from '../../components/loadingModal';
 import emitter from '../../../utils/emitter';
 import {EmitterKey} from '../../../constants';
+import globalStyle from '../../../constants/globalStyles';
 
 const InitView = props => {
   const CELL_COUNT = 4;
+  const [styles, theme] = useTheme(themedStyles);
+  const [glbStyles] = useTheme(globalStyle);
   const [code, setCode] = useState('');
   const [state, setState] = useMergeState({
     isLoading: false,
@@ -30,29 +35,24 @@ const InitView = props => {
     setState({isShowModal: true});
     setTimeout(() => {
       setState({isShowModal: false});
-      // navigation.navigate(EnumRouteName.Notes);
       emitter.emit(EmitterKey.CHANGE_STATUS, {isAuthorized: true});
     }, 3000);
   };
+
   const onBackDrop = () => {
     setState({isShowModal: false});
   };
+
   return (
-    <View
-      style={{
-        backgroundColor: '#f7fafe',
-        flex: 1,
-        alignItems: 'center',
-        paddingTop: 150,
-      }}>
+    <View style={styles.container}>
       <SvgXml fill={'#f7fafe'} xml={Svgs.ic_lock} />
       <InputCodeCT
-        customStyles={{width: '60%', marginTop: 100, marginBottom: 10}}
+        customStyles={styles.inputCode}
         value={code}
         cellCount={CELL_COUNT}
         onChangeText={onChangeText}
       />
-      <Text style={{fontSize: 16}}>Enter your key code</Text>
+      <Text style={glbStyles.font16}>Enter your key code</Text>
       <LoadingModal
         onPressBackDrop={onBackDrop}
         isVisible={state.isShowModal}

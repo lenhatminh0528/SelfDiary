@@ -48,8 +48,6 @@ const EditDetail = props => {
   useEffect(() => {
     if (isFocused) {
       getInit();
-      const t = route.params.item;
-      console.log('route param: ', t);
     }
   }, [isFocused]);
 

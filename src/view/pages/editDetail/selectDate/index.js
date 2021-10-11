@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {View, Text, TouchableOpacity, Switch} from 'react-native';
+// import Switch from 'react-native-switch-pro';
 import Svgs from '../../../../assets/images/svg';
 import {SvgXml} from 'react-native-svg';
 import {useTheme} from 'react-native-themed-styles';

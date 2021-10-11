@@ -4,7 +4,7 @@ import {appSchema, tableSchema, tableName} from '@nozbe/watermelondb';
 //   notes: (tableName('notes'): tableName<Note)
 // }
 export default appSchema({
-  version: 1,
+  version: 2,
   tables: [
     //add tableSchemas
     tableSchema({

@@ -26,6 +26,8 @@ export class Note extends Model {
   @date('time_created')
   timeCreated;
 
+  @readonly @date('updated_at') updatedAt;
+
   @children('selectedDates')
   selectedDates;
 

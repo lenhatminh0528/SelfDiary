@@ -74,6 +74,65 @@ class NotificationService {
       });
     }
   };
+
+  scheduleNotification = (type, message, title, date) => {
+    let id;
+    id = 1;
+    this.notificationCount += 1;
+    const userInfo = {
+      id,
+      type,
+      notificationType: 'local',
+    };
+    // this.cancelLocalNotificationsWithType(type);
+    if (isAndroid) {
+      PushNotification.createChannel(
+        {
+          channelId: type,
+          channelName: type,
+          soundName: 'default',
+          importance: 4,
+          vibrate: true,
+        },
+        () => {
+          PushNotification.localNotificationSchedule({
+            channelId: type,
+            soundName: 'default',
+            importance: 4,
+            priority: 'high',
+            visibility: 'private',
+            smallIcon: 'ic_notification',
+            color: 'red',
+            ticker: type,
+            vibrate: true,
+            id: id,
+            message: message,
+            allowWhileIdle: false,
+            title,
+            date: new Date(Date.now() + date * 1000), // in date seconds.
+            repeatTime: 1,
+            showWhen: true,
+            when: new Date().getTime(),
+            userInfo,
+            number: this.notificationCount,
+          });
+        },
+      );
+    } else {
+      PushNotification.localNotificationSchedule({
+        soundName: 'default',
+        playSound: true,
+        number: this.notificationCount,
+        id: id,
+        message: message,
+        repeatTime: 1,
+        date: new Date(Date.now() + date * 1000),
+        allowWhileIdle: false,
+        title,
+        userInfo,
+      });
+    }
+  };
 }
 
 const services = new NotificationService();

@@ -13,10 +13,11 @@ import useMergeState from '../../../utils/useMergeState';
 import PNG from '../../../assets/images/png';
 import MessageModal from '../../components/messageModal';
 import moment from 'moment';
-import {pushNoti} from '../../../utils';
+import {pushNoti, pushScheduleNoti} from '../../../utils';
 import PushNotificationComponent from '../../components/pushNotification';
 import withObservables from '@nozbe/with-observables';
 import {database} from '../../../constants/localStorageModal/database';
+import {Q} from '@nozbe/watermelondb';
 
 const DATA = [
   {
@@ -182,19 +183,21 @@ const NoteScreen = props => {
           const note = await database.get('notes').find(item.id);
           const selectedDates = await note.selectedDates;
           //update title, message
-          const updateInfo = note.prepareUpdate(n => {
-            n.title = item.title;
-            n.message = item.message;
+          const updateInfo = note.prepareUpdate(dbInfo => {
+            dbInfo.title = item.title;
+            dbInfo.message = item.message;
           });
-          //delete old dates
-          const deleteDates = [];
-          selectedDates.forEach(date => {
-            const t = date.prepareMarkAsDeleted();
-            deleteDates.push(t);
-          });
-          //update new dates
+
           const updateDates = [];
+          const deleteDates = [];
           if (item.dateSelected.length > 0) {
+            //delete old dates
+            selectedDates.forEach(date => {
+              const t = date.prepareMarkAsDeleted();
+              deleteDates.push(t);
+            });
+
+            //update new dates
             item.dateSelected.forEach(newDate => {
               const newDates = database
                 .get('selectedDates')
@@ -206,7 +209,7 @@ const NoteScreen = props => {
             });
           }
           const all = [...[updateInfo], ...updateDates, ...deleteDates];
-          database.batch(all);
+          database.batch(...all);
           return all;
         }
       });
@@ -217,7 +220,8 @@ const NoteScreen = props => {
 
   const onPressDelete = id => {
     console.log('id: ', id);
-    setState({isShowModal: true, deletedId: id});
+    // pushScheduleNoti();
+    // setState({isShowModal: true, deletedId: id});
   };
 
   const renderItem = ({item}) => (
@@ -248,7 +252,7 @@ const NoteScreen = props => {
 
   return (
     <View style={[glbStyles.flex1, {backgroundColor: theme.white}]}>
-      <PushNotificationComponent />
+      {/* <PushNotificationComponent /> */}
       <HeaderContainer
         title={'Note Screen'}
         // iconRightContent={
@@ -295,7 +299,11 @@ NoteScreen.propTypes = {
 const enhance = withObservables(
   ['notes'],
   ({}) => ({
-    notes: database.get('notes').query(),
+    notes: database
+      .get('notes')
+      // .query(),
+      .query(Q.experimentalSkip(0), Q.experimentalTake(10))
+      .observeWithColumns(['title', 'message']),
   }),
   // {
   //   const observables = ['id', 'title', 'message'];

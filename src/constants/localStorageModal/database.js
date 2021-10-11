@@ -4,13 +4,13 @@ import {Database} from '@nozbe/watermelondb';
 import SQLiteAdapter from '@nozbe/watermelondb/adapters/sqlite';
 
 import schema from './schema';
-import migrations from './migrations';
+// import migrations from './migrations';
 import {Note} from './noteModel';
 import {SelectedDate} from './selectedDateModel';
 
 const adapter = new SQLiteAdapter({
   schema,
-  migrations,
+  // migrations,
   jsi: !isAndroid,
   dbName: 'SelfDiaryApp',
   onSetUpError: error => {
