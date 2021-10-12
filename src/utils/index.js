@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Dimensions, Platform} from 'react-native';
-import NotificationService from '../view/components/pushNotification/notificationService';
+// import NotificationService from '../view/components/pushNotification/notificationService';
 
 export const screenWidth = Dimensions.get('window').width;
 
@@ -17,22 +17,22 @@ export const storeData = async (value, KEY) => {
   }
 };
 
-export const pushNoti = () => {
-  NotificationService.pushLocalNotification(
-    'hello',
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
-    'title 1',
-  );
-};
+// export const pushNoti = () => {
+//   NotificationService.pushLocalNotification(
+//     'hello',
+//     'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+//     'title 1',
+//   );
+// };
 
-export const pushScheduleNoti = () => {
-  NotificationService.scheduleNotification(
-    'hell',
-    'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-    'title 2',
-    10,
-  );
-};
+// export const pushScheduleNoti = () => {
+//   NotificationService.scheduleNotification(
+//     'hell',
+//     'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+//     'title 2',
+//     10,
+//   );
+// };
 
 export const getData = async KEY => {
   try {

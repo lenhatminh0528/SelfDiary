@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {View, Text, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
@@ -24,6 +24,10 @@ const DateTimeModal = props => {
     viewingMonth: moment().toDate(),
     listSelectedDate: data,
   });
+
+  useEffect(() => {
+    setState({listSelectedDate: data});
+  }, [data]);
 
   const onMonthChange = date => {
     const newDate = moment(date.dateString, 'YYYY-MM-DD').toDate();
@@ -135,6 +139,8 @@ const DateTimeModal = props => {
     // let daysInMonth = moment(state.viewingMonth).daysInMonth();
     // let current = moment(state.viewingMonth).date(daysInMonth);
     const marker = {};
+    console.log('state viewing: ', state.viewingMonth);
+    console.log('listSelectedDate: ', state.listSelectedDate);
     if (moment(state.viewingMonth).isSameOrAfter(moment(), 'month')) {
       state.listSelectedDate.forEach(date => {
         marker[date] = {

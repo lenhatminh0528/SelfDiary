@@ -54,10 +54,9 @@ const EditDetail = props => {
   const getInit = async () => {
     const dates = (await item.selectedDates) || [];
     const mapDates = [];
-    dates.forEach(d => mapDates.push(d.date));
-    setState({dateSelected: mapDates});
     if (dates.length > 0) {
-      setState({isSwitchOn: true});
+      dates.forEach(d => mapDates.push(moment(d.date).format('YYYY-MM-DD')));
+      setState({isSwitchOn: true, dateSelected: mapDates});
     }
   };
 

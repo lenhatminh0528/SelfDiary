@@ -13,8 +13,8 @@ import useMergeState from '../../../utils/useMergeState';
 import PNG from '../../../assets/images/png';
 import MessageModal from '../../components/messageModal';
 import moment from 'moment';
-import {pushNoti, pushScheduleNoti} from '../../../utils';
-import PushNotificationComponent from '../../components/pushNotification';
+// import {pushNoti, pushScheduleNoti} from '../../../utils';
+// import PushNotificationComponent from '../../components/pushNotification';
 import withObservables from '@nozbe/with-observables';
 import {database} from '../../../constants/localStorageModal/database';
 import {Q} from '@nozbe/watermelondb';
@@ -220,6 +220,7 @@ const NoteScreen = props => {
 
   const onPressDelete = id => {
     console.log('id: ', id);
+    // pushNoti();
     // pushScheduleNoti();
     // setState({isShowModal: true, deletedId: id});
   };
