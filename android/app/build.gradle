@@ -188,7 +188,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
 //    implementation project(':react-native-splash-screen')
-//    implementation project(':react-native-push-notification')
+   implementation project(':react-native-push-notification')
     implementation project(':watermelondb-jsi')
 //    implementation "com.google.firebase:firebase-core:15.0.2"
 //    implementation "com.google.firebase:firebase-messaging:22.0.0"
