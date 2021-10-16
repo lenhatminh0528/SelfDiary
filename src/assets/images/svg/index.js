@@ -17,9 +17,12 @@ import ic_arrow2 from './ic_arrow2.svg';
 import ic_noDocuments from './ic_noDocuments.svg';
 import ic_noConnection from './ic_noConnection.svg';
 import cancel from './cancel.svg';
+import ic_mail from './ic_mail.svg';
+import ic_phone from './ic_phone.svg';
 
 const Svgs = {
   ic_lock,
+  ic_phone,
   ic_close,
   back,
   ic_trash,
@@ -38,6 +41,7 @@ const Svgs = {
   ic_noDocuments,
   ic_noConnection,
   cancel,
+  ic_mail,
 };
 
 export default Svgs;
