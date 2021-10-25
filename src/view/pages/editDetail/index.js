@@ -102,7 +102,7 @@ const EditDetail = props => {
       };
       navigation.goBack();
       upDateList(data);
-    }, 3000);
+    }, 1500);
   };
 
   const onPressConfirm = () => {

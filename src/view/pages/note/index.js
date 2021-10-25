@@ -1,6 +1,14 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
-import {View, FlatList, Text, Image} from 'react-native';
+import {
+  View,
+  FlatList,
+  Text,
+  Image,
+  LayoutAnimation,
+  UIManager,
+  Platform,
+} from 'react-native';
 import HeaderContainer from '../../components/headerContainer';
 import Svgs from '../../../assets/images/svg';
 import ButtonCT from '../../components/buttonCT';
@@ -125,6 +133,14 @@ const NoteScreen = props => {
     deletedId: '',
   });
 
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      if (UIManager.setLayoutAnimationEnabledExperimental) {
+        UIManager.setLayoutAnimationEnabledExperimental(true);
+      }
+    }
+  },[])
+
   const onPressItem = async item => {
     // pushNoti();
     navigation.navigate(EnumRouteName.EditDetail, {
@@ -133,12 +149,40 @@ const NoteScreen = props => {
     });
   };
 
+  const layoutAnimConfig = {
+    duration: 300,
+    create: {
+      duration: 1500,
+      property: LayoutAnimation.Properties.opacity,
+      type: LayoutAnimation.Types.easeInEaseOut,
+    },
+    update: {
+      type: LayoutAnimation.Types.easeInEaseOut,
+    },
+    delete: {
+      duration: 500,
+      type: LayoutAnimation.Types.easeInEaseOut,
+      property: LayoutAnimation.Properties.opacity,
+    },
+  };
+
   const onPressConfirm = async () => {
     try {
       database.write(async () => {
         const note = await database.get('notes').find(state.deletedId);
+        const selectedDates = await note.selectedDates;
+
+        if (selectedDates.length > 0) {
+          selectedDates.forEach(date => {
+            date.prepareMarkAsDeleted();
+          });
+        }
         await note.destroyPermanently();
+        const q = await database.get('notes').query();
+        const d = await q.selectedDates;
+        console.log('d: ', d);
         setState({isShowModal: false, deletedId: ''});
+        LayoutAnimation.configureNext(layoutAnimConfig);
       });
     } catch (error) {
       console.log('error: ', error);
@@ -178,6 +222,7 @@ const NoteScreen = props => {
           }
           const all = [...[note], ...updateDates];
           database.batch(...all);
+          LayoutAnimation.configureNext(layoutAnimConfig);
           return all;
         } else {
           const note = await database.get('notes').find(item.id);
@@ -221,8 +266,8 @@ const NoteScreen = props => {
   const onPressDelete = id => {
     console.log('id: ', id);
     // pushNoti();
-    pushScheduleNoti();
-    // setState({isShowModal: true, deletedId: id});
+    // pushScheduleNoti();
+    setState({isShowModal: true, deletedId: id});
   };
 
   const renderItem = ({item}) => (
